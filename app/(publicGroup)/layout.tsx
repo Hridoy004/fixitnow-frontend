@@ -1,5 +1,6 @@
 // import { Navbar } from "@/components/shared/navbar";
 // import { getMe } from "@/service/getMe";
+
 import React from "react";
 
 const PublicGroupLayout = async ({
@@ -11,6 +12,7 @@ const PublicGroupLayout = async ({
   return (
     <>
       {/* <Navbar user={user} /> */}
+
       {children}
     </>
   );
