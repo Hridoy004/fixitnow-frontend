@@ -8,128 +8,225 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { NavbarProps } from "@/lib/types";
+import { NavbarProps } from "@/lib/types";
 // import { logout } from "@/service/logout";
-import { LayoutDashboard, LogOut, Settings, User } from "lucide-react";
+import {
+  CalendarCheck,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  User,
+  Wrench,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Button } from "../ui/button";
 
-// Navigation items configuration
+// Main navigation items
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
+  { label: "Technicians", href: "/technicians" },
+  { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
-  { label: "News", href: "/news" },
-  { label: "Premium", href: "/premium" },
 ];
 
-// User menu items configuration
+// User menu items
 const userMenuItems = [
-  { label: "Dashboard", icon: LayoutDashboard, action: "dashboard" },
-  { label: "Profile", icon: User, action: "profile" },
-  { label: "Settings", icon: Settings, action: "settings" },
+  {
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    action: "dashboard",
+  },
+  {
+    label: "Profile",
+    icon: User,
+    action: "profile",
+  },
+  {
+    label: "My Bookings",
+    icon: CalendarCheck,
+    action: "bookings",
+  },
+  {
+    label: "Settings",
+    icon: Settings,
+    action: "settings",
+  },
 ];
 
-export function Navbar() {
+export function Navbar({ user }: NavbarProps) {
   const router = useRouter();
+
   const handleUserMenuAction = async (action: string) => {
+    const role = user.data?.profile?.role;
+
+    // Dashboard
     if (action === "dashboard") {
-      if (user.data.profile.role === "USER") {
+      if (role === "CUSTOMER") {
         router.push("/dashboard");
-      } else if (user.data.profile.role === "AUTHOR") {
-        router.push("/author-dashboard");
-      } else if (user.data.profile.role === "ADMIN") {
+      } else if (role === "TECHNICIAN") {
+        router.push("/technician-dashboard");
+      } else if (role === "ADMIN") {
         router.push("/admin-dashboard");
       }
 
       return;
     }
 
-    if (action === "logout") {
-      //   await logout();
-      toast.success("User Logged Out Successfully!");
-      router.push("/login");
+    // Profile
+    if (action === "profile") {
+      if (role === "CUSTOMER") {
+        router.push("/profile");
+      } else if (role === "TECHNICIAN") {
+        router.push("/technician/profile");
+      } else if (role === "ADMIN") {
+        router.push("/admin/profile");
+      }
+
+      return;
     }
+
+    // Bookings
+    if (action === "bookings") {
+      if (role === "CUSTOMER") {
+        router.push("/dashboard/bookings");
+      } else if (role === "TECHNICIAN") {
+        router.push("/technician-dashboard/bookings");
+      }
+
+      return;
+    }
+
+    // Settings
+    if (action === "settings") {
+      router.push("/settings");
+      return;
+    }
+
+    // Logout
+    // if (action === "logout") {
+    //   await logout();
+
+    //   toast.success("Logged out successfully!");
+
+    //   router.push("/login");
+    //   router.refresh();
+
+    //   return;
+    // }
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className="border-b border-border bg-background">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="shrink-0">
-            <span className="text-2xl font-bold text-[#0284a7]">
-              NextJs Press
-            </span>
+            <div className="flex items-center gap-2">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+                <Wrench className="h-5 w-5 text-primary-foreground" />
+              </div>
+
+              <span className="text-xl font-bold text-primary sm:text-2xl">
+                FixItNow
+              </span>
+            </div>
           </Link>
 
-          {/* Nav Links */}
-          <div className="hidden md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:flex md:items-center md:gap-8">
+          {/* Navigation Links */}
+          <div className="hidden md:absolute md:left-1/2 md:flex md:-translate-x-1/2 md:items-center md:gap-7">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-slate-600 hover:text-[#0284a7] transition-colors text-sm font-medium"
+                className="text-sm font-medium text-foreground transition-colors hover:text-primary"
               >
                 {item.label}
               </Link>
             ))}
           </div>
 
-          {/* User Dropdown */}
+          {/* User Section */}
           {user.success ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="cursor-pointer">
-                  <div className="w-9 h-9 rounded-full bg-[#0284a7]/10 flex items-center justify-center ring-1 ring-[#0284a7]/20 hover:bg-[#0284a7]/15 transition-colors">
-                    <User className="w-4 h-4 text-[#0284a7]" />
-                  </div>
-                </div>
+                <button
+                  type="button"
+                  className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-primary/10 outline-none transition-colors hover:bg-primary/20"
+                >
+                  <User className="h-5 w-5 text-primary" />
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+
+              <DropdownMenuContent align="end" className="w-60">
+                {/* User Info */}
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">
-                      {user.data?.profile.name}
+                    <p className="text-sm font-semibold">
+                      {user.data?.profile?.name}
                     </p>
+
                     <p className="text-xs text-muted-foreground">
-                      {user.data?.profile.email}
+                      {user.data?.profile?.email}
+                    </p>
+
+                    <p className="mt-1 text-xs font-medium text-primary">
+                      {user.data?.profile?.role}
                     </p>
                   </div>
                 </DropdownMenuLabel>
+
                 <DropdownMenuSeparator />
+
+                {/* Menu Items */}
                 {userMenuItems.map((item) => {
+                  // Don't show bookings for admin
+                  if (
+                    item.action === "bookings" &&
+                    user.data?.profile?.role === "ADMIN"
+                  ) {
+                    return null;
+                  }
+
                   const Icon = item.icon;
+
                   return (
                     <DropdownMenuItem
                       key={item.action}
                       onClick={() => handleUserMenuAction(item.action)}
+                      className="cursor-pointer"
                     >
-                      <Icon className="w-4 h-4 mr-2" />
+                      <Icon className="mr-2 h-4 w-4" />
                       <span>{item.label}</span>
                     </DropdownMenuItem>
                   );
                 })}
+
                 <DropdownMenuSeparator />
+
+                {/* Logout */}
                 <DropdownMenuItem
-                  onClick={async () => {
-                    await handleUserMenuAction("logout");
-                  }}
+                  onClick={() => handleUserMenuAction("logout")}
+                  className="cursor-pointer text-destructive focus:text-destructive"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
+                  <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href={"/login"}>
-              <Button className="cursor-pointer rounded-full bg-[#0284a7] px-6 font-semibold text-white shadow-sm hover:bg-[#026d8a] active:bg-[#015a72]">
-                Sign in
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/login">
+                <Button className="cursor-pointer">Login</Button>
+              </Link>
+
+              <Link href="/register" className="hidden sm:block">
+                <Button variant="outline" className="cursor-pointer">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
       </div>

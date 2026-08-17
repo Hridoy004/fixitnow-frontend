@@ -62,16 +62,54 @@ export const loginAction = async (
       redirect(redirectTo);
     }
 
-    if (decodedToken.role === "USER") {
+    if (decodedToken.role === "CUSTOMER") {
       redirect("/dashboard");
     } else if (decodedToken.role === "ADMIN") {
       redirect("/admin-dashboard");
-    } else if (decodedToken.role === "AUTHOR") {
-      redirect("/author-dashboard");
+    } else if (decodedToken.role === "TECHNICIAN") {
+      redirect("/technician-dashboard");
     }
   }
 
   return result;
 };
 
-export const registerAction = async () => {};
+type RegisterState = {
+  success: boolean;
+  message: string;
+};
+
+export const registerAction = async (
+  prevState: RegisterState,
+  formData: FormData,
+) => {
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const phone = formData.get("phone");
+  const role = formData.get("role");
+
+  const payload = {
+    name,
+    email,
+    password,
+    phone,
+    role,
+  };
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const result = await res.json();
+
+  if (result.success) {
+    redirect("/login");
+  }
+
+  return result;
+};

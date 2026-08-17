@@ -28,7 +28,6 @@ const LoginForm = () => {
 
   return (
     <form action={action} className="space-y-5">
-      {/* EMAIL */}
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium">
           Email
@@ -46,18 +45,17 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {/* PASSWORD */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="password" className="text-sm font-medium">
             Password
           </Label>
-          <a
+          {/* <a
             href="/forgot-password"
             className="text-xs font-medium text-primary hover:underline"
           >
             Forgot password?
-          </a>
+          </a> */}
         </div>
         <div className="relative">
           <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -84,7 +82,6 @@ const LoginForm = () => {
         </div>
       </div>
 
-      {/* SUBMIT */}
       <Button
         type="submit"
         disabled={pending}

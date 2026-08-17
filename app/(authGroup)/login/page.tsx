@@ -1,3 +1,4 @@
+import { Wrench } from "lucide-react";
 import LoginForm from "../_components/LoginForm";
 
 export default function LoginPage() {
@@ -5,14 +6,12 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-background via-background to-muted p-4">
       <div className="w-full max-w-md">
         <div className="rounded-2xl border border-border bg-card/80 p-8 shadow-xl backdrop-blur-sm">
-          {/* LOGO / BRAND */}
           <div className="mb-6 flex justify-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <span className="text-lg font-bold">F</span>
+              <Wrench className="h-5 w-5 text-primary-foreground" />
             </div>
           </div>
 
-          {/* FORM GENERIC TEXTS */}
           <div className="mb-8 space-y-2 text-center">
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Welcome Back
@@ -22,10 +21,8 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* FORM */}
           <LoginForm />
 
-          {/* FOOTER LINK */}
           <p className="mt-6 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <a
