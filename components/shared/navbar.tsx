@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NavbarProps } from "@/lib/types";
-// import { logout } from "@/service/logout";
+import { logout } from "@/service/logout";
 import {
   CalendarCheck,
   LayoutDashboard,
@@ -20,9 +20,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Button } from "../ui/button";
 
-// Main navigation items
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
@@ -31,7 +31,6 @@ const navItems = [
   { label: "Contact", href: "/contact" },
 ];
 
-// User menu items
 const userMenuItems = [
   {
     label: "Dashboard",
@@ -58,67 +57,71 @@ const userMenuItems = [
 export function Navbar({ user }: NavbarProps) {
   const router = useRouter();
 
+  const role = user.data?.profile?.role;
+
   const handleUserMenuAction = async (action: string) => {
-    const role = user.data?.profile?.role;
+    switch (action) {
+      case "dashboard": {
+        if (role === "CUSTOMER") {
+          router.push("/dashboard");
+        } else if (role === "TECHNICIAN") {
+          router.push("/technician-dashboard");
+        } else if (role === "ADMIN") {
+          router.push("/admin-dashboard");
+        }
 
-    // Dashboard
-    if (action === "dashboard") {
-      if (role === "CUSTOMER") {
-        router.push("/dashboard");
-      } else if (role === "TECHNICIAN") {
-        router.push("/technician-dashboard");
-      } else if (role === "ADMIN") {
-        router.push("/admin-dashboard");
+        break;
       }
 
-      return;
-    }
+      case "profile": {
+        if (role === "CUSTOMER") {
+          router.push("/profile");
+        } else if (role === "TECHNICIAN") {
+          router.push("/technician/profile");
+        } else if (role === "ADMIN") {
+          router.push("/admin/profile");
+        }
 
-    // Profile
-    if (action === "profile") {
-      if (role === "CUSTOMER") {
-        router.push("/profile");
-      } else if (role === "TECHNICIAN") {
-        router.push("/technician/profile");
-      } else if (role === "ADMIN") {
-        router.push("/admin/profile");
+        break;
       }
 
-      return;
-    }
+      case "bookings": {
+        if (role === "CUSTOMER") {
+          router.push("/dashboard/bookings");
+        } else if (role === "TECHNICIAN") {
+          router.push("/technician-dashboard/bookings");
+        }
 
-    // Bookings
-    if (action === "bookings") {
-      if (role === "CUSTOMER") {
-        router.push("/dashboard/bookings");
-      } else if (role === "TECHNICIAN") {
-        router.push("/technician-dashboard/bookings");
+        break;
       }
 
-      return;
+      case "settings": {
+        router.push("/settings");
+        break;
+      }
+
+      case "logout": {
+        try {
+          await logout();
+
+          toast.success("Logged out successfully!");
+
+          router.push("/login");
+          router.refresh();
+        } catch {
+          toast.error("Failed to log out. Please try again.");
+        }
+
+        break;
+      }
+
+      default:
+        break;
     }
-
-    // Settings
-    if (action === "settings") {
-      router.push("/settings");
-      return;
-    }
-
-    // Logout
-    // if (action === "logout") {
-    //   await logout();
-
-    //   toast.success("Logged out successfully!");
-
-    //   router.push("/login");
-    //   router.refresh();
-
-    //   return;
-    // }
   };
 
   return (
-    <nav className="border-b border-border bg-background">
+    <nav className="border-b border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
@@ -134,13 +137,13 @@ export function Navbar({ user }: NavbarProps) {
             </div>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation */}
           <div className="hidden md:absolute md:left-1/2 md:flex md:-translate-x-1/2 md:items-center md:gap-7">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-foreground transition-colors hover:text-primary"
+                className="text-sm font-medium text-slate-600 transition-colors hover:text-primary"
               >
                 {item.label}
               </Link>
@@ -150,79 +153,127 @@ export function Navbar({ user }: NavbarProps) {
           {/* User Section */}
           {user.success ? (
             <DropdownMenu>
+              {/* User Trigger */}
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-primary/10 outline-none transition-colors hover:bg-primary/20"
+                  aria-label="Open user menu"
+                  className="
+                    flex
+                    h-10
+                    w-10
+                    cursor-pointer
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-slate-200
+                    bg-white
+                    text-primary
+                    shadow-sm
+                    outline-none
+                    transition-all
+                    duration-200
+                    hover:border-primary/30
+                    hover:bg-primary/5
+                    hover:shadow-md
+                    focus-visible:ring-2
+                    focus-visible:ring-primary/30
+                  "
                 >
-                  <User className="h-5 w-5 text-primary" />
+                  <User className="h-5 w-5" />
                 </button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end" className="w-60">
-                {/* User Info */}
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm font-semibold">
+              {/* Dropdown */}
+              <DropdownMenuContent align="end" sideOffset={8} className="w-64">
+                {/* User Information */}
+                <DropdownMenuLabel className="px-3 py-3 font-normal">
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-slate-900">
                       {user.data?.profile?.name}
                     </p>
 
-                    <p className="text-xs text-muted-foreground">
+                    <p className="truncate text-xs text-slate-500">
                       {user.data?.profile?.email}
                     </p>
 
-                    <p className="mt-1 text-xs font-medium text-primary">
-                      {user.data?.profile?.role}
-                    </p>
+                    <div className="pt-1">
+                      <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                        {role}
+                      </span>
+                    </div>
                   </div>
                 </DropdownMenuLabel>
 
                 <DropdownMenuSeparator />
 
                 {/* Menu Items */}
-                {userMenuItems.map((item) => {
-                  // Don't show bookings for admin
-                  if (
-                    item.action === "bookings" &&
-                    user.data?.profile?.role === "ADMIN"
-                  ) {
-                    return null;
-                  }
+                <div className="space-y-0.5">
+                  {userMenuItems.map((item) => {
+                    // Admin does not have customer/technician bookings.
+                    if (item.action === "bookings" && role === "ADMIN") {
+                      return null;
+                    }
 
-                  const Icon = item.icon;
+                    const Icon = item.icon;
 
-                  return (
-                    <DropdownMenuItem
-                      key={item.action}
-                      onClick={() => handleUserMenuAction(item.action)}
-                      className="cursor-pointer"
-                    >
-                      <Icon className="mr-2 h-4 w-4" />
-                      <span>{item.label}</span>
-                    </DropdownMenuItem>
-                  );
-                })}
+                    return (
+                      <DropdownMenuItem
+                        key={item.action}
+                        onClick={() => handleUserMenuAction(item.action)}
+                      >
+                        <Icon
+                          aria-hidden="true"
+                          className="h-4 w-4"
+                          strokeWidth={2}
+                        />
+
+                        <span>{item.label}</span>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </div>
 
                 <DropdownMenuSeparator />
 
                 {/* Logout */}
                 <DropdownMenuItem
+                  variant="destructive"
                   onClick={() => handleUserMenuAction("logout")}
-                  className="cursor-pointer text-destructive focus:text-destructive"
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
+                  <LogOut
+                    aria-hidden="true"
+                    className="h-4 w-4"
+                    strokeWidth={2}
+                  />
+
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
+            /* Authentication Buttons */
             <div className="flex items-center gap-2">
               <Link href="/login">
-                <Button className="cursor-pointer">Login</Button>
+                <Button className="cursor-pointer shadow-sm">Login</Button>
               </Link>
 
               <Link href="/register" className="hidden sm:block">
-                <Button variant="outline" className="cursor-pointer">
+                <Button
+                  variant="outline"
+                  className="
+                    cursor-pointer
+                    border-slate-200
+                    bg-white
+                    text-slate-700
+                    shadow-sm
+                    transition-all
+                    hover:border-primary/30
+                    hover:bg-primary/5
+                    hover:text-primary
+                  "
+                >
                   Get Started
                 </Button>
               </Link>
