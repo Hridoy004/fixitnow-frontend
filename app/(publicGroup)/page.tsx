@@ -1,3 +1,9 @@
+import HeroSection from "./_components/HeroSection";
+
 export default function HomePage() {
-  return <div>Hello, fixitnow!</div>;
+  return (
+    <main>
+      <HeroSection />
+    </main>
+  );
 }

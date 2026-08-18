@@ -8,8 +8,6 @@ export const getMe = async () => {
   const accessToken = cookieStore.get("accessToken")?.value || null;
 
   if (!accessToken) {
-    // throw new Error("User Not Logged In!");
-
     return {
       success: false,
       message: "User not logged in!",
@@ -18,16 +16,12 @@ export const getMe = async () => {
 
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/me`, {
     headers: {
-      // Authorization : accessToken as unknown as string,
-      // Authorization : `${accessToken}`,
-      // Authorization : `Bearer ${accessToken}`
-
       Cookie: `accessToken=${accessToken}`,
     },
 
     cache: "force-cache",
     next: {
-      revalidate: 60 * 60 * 24, // 1day
+      revalidate: 60 * 60 * 24,
       tags: ["my-profile"],
     },
   });

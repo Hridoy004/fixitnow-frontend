@@ -124,7 +124,6 @@ export function Navbar({ user }: NavbarProps) {
     <nav className="border-b border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="shrink-0">
             <div className="flex items-center gap-2">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
@@ -137,7 +136,6 @@ export function Navbar({ user }: NavbarProps) {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:absolute md:left-1/2 md:flex md:-translate-x-1/2 md:items-center md:gap-7">
             {navItems.map((item) => (
               <Link
@@ -150,10 +148,8 @@ export function Navbar({ user }: NavbarProps) {
             ))}
           </div>
 
-          {/* User Section */}
           {user.success ? (
             <DropdownMenu>
-              {/* User Trigger */}
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
@@ -185,9 +181,7 @@ export function Navbar({ user }: NavbarProps) {
                 </button>
               </DropdownMenuTrigger>
 
-              {/* Dropdown */}
               <DropdownMenuContent align="end" sideOffset={8} className="w-64">
-                {/* User Information */}
                 <DropdownMenuLabel className="px-3 py-3 font-normal">
                   <div className="space-y-1">
                     <p className="text-sm font-semibold text-slate-900">
@@ -208,10 +202,8 @@ export function Navbar({ user }: NavbarProps) {
 
                 <DropdownMenuSeparator />
 
-                {/* Menu Items */}
                 <div className="space-y-0.5">
                   {userMenuItems.map((item) => {
-                    // Admin does not have customer/technician bookings.
                     if (item.action === "bookings" && role === "ADMIN") {
                       return null;
                     }
@@ -237,7 +229,6 @@ export function Navbar({ user }: NavbarProps) {
 
                 <DropdownMenuSeparator />
 
-                {/* Logout */}
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => handleUserMenuAction("logout")}
@@ -253,7 +244,6 @@ export function Navbar({ user }: NavbarProps) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            /* Authentication Buttons */
             <div className="flex items-center gap-2">
               <Link href="/login">
                 <Button className="cursor-pointer shadow-sm">Login</Button>
