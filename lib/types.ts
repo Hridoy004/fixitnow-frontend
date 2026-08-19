@@ -78,3 +78,29 @@ export type ISidebarItem = {
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
 };
+
+export interface ITechnician {
+  id: string;
+  userId: string;
+  bio: string;
+  experience: number;
+  location: string;
+  hourlyRate: number;
+  averageRating: number;
+  isAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IUsers {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  image: string | null;
+  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+  activeStatus: "ACTIVE" | "INACTIVE";
+  createdAt: string;
+  updatedAt: string;
+  technician: ITechnician | null;
+}

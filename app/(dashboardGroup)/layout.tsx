@@ -14,7 +14,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
           <main className="flex-1 min-w-0">{children}</main>
         </div>
       </SidebarProvider>
-      <main className="flex-1 min-w-0">{children}</main>
     </div>
   );
 };

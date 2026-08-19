@@ -38,11 +38,6 @@ const userMenuItems = [
     action: "dashboard",
   },
   {
-    label: "Profile",
-    icon: User,
-    action: "profile",
-  },
-  {
     label: "My Bookings",
     icon: CalendarCheck,
     action: "bookings",
@@ -68,18 +63,6 @@ export function Navbar({ user }: NavbarProps) {
           router.push("/technician-dashboard");
         } else if (role === "ADMIN") {
           router.push("/admin-dashboard");
-        }
-
-        break;
-      }
-
-      case "profile": {
-        if (role === "CUSTOMER") {
-          router.push("/profile");
-        } else if (role === "TECHNICIAN") {
-          router.push("/technician/profile");
-        } else if (role === "ADMIN") {
-          router.push("/admin/profile");
         }
 
         break;

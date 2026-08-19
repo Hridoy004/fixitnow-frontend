@@ -1,15 +1,30 @@
 import { ISidebarItem } from "@/lib/types";
-import { LayoutDashboard } from "lucide-react";
+import {
+  CalendarCheck,
+  FolderTree,
+  LayoutDashboard,
+  Users,
+} from "lucide-react";
 
 export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
   {
-    label: "Admin Dashboard",
-    href: "/Admin-dashboard",
+    label: "Dashboard",
+    href: "/admin-dashboard",
     icon: LayoutDashboard,
   },
-  //   {
-  //     label: "My Posts",
-  //     href: "/admin-dashboard/my-posts",
-  //     icon: FileText,
-  //   },
+  {
+    label: "Users",
+    href: "/admin-dashboard/users",
+    icon: Users,
+  },
+  {
+    label: "Categories",
+    href: "/admin-dashboard/categories",
+    icon: FolderTree,
+  },
+  {
+    label: "Bookings",
+    href: "/admin-dashboard/bookings",
+    icon: CalendarCheck,
+  },
 ];
