@@ -34,7 +34,6 @@ export function UserPagination({
 
   return (
     <div className="flex items-center justify-between gap-4">
-      {/* Result count */}
       <p className="text-sm text-muted-foreground">
         Showing{" "}
         <span className="font-medium text-foreground">
@@ -43,7 +42,6 @@ export function UserPagination({
         of <span className="font-medium text-foreground">{total}</span> users
       </p>
 
-      {/* Controls */}
       <div className="flex items-center gap-2">
         <Button
           variant="outline"

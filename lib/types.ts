@@ -104,3 +104,10 @@ export interface IUsers {
   updatedAt: string;
   technician: ITechnician | null;
 }
+
+export interface ICategory {
+  id: string;
+  name: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

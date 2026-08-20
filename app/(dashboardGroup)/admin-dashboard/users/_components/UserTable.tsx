@@ -31,7 +31,6 @@ export async function UserTable({ page }: UserTableProps) {
 
   return (
     <div className="space-y-4">
-      {/* Table */}
       <div className="overflow-hidden rounded-xl border border-border bg-background">
         <Table>
           <TableHeader>
@@ -49,7 +48,6 @@ export async function UserTable({ page }: UserTableProps) {
           <TableBody>
             {result.data.map((user: IUsers) => (
               <TableRow key={user.id}>
-                {/* User */}
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-sm font-medium">
@@ -60,24 +58,20 @@ export async function UserTable({ page }: UserTableProps) {
                   </div>
                 </TableCell>
 
-                {/* Email */}
                 <TableCell>
                   <span className="text-sm">{user.email}</span>
                 </TableCell>
 
-                {/* Phone */}
                 <TableCell className="text-muted-foreground">
                   {user.phone || "-"}
                 </TableCell>
 
-                {/* Role */}
                 <TableCell>
                   <span className="rounded-md bg-muted px-2 py-1 text-xs font-medium">
                     {user.role}
                   </span>
                 </TableCell>
 
-                {/* Status */}
                 <TableCell>
                   <span
                     className={
@@ -90,12 +84,10 @@ export async function UserTable({ page }: UserTableProps) {
                   </span>
                 </TableCell>
 
-                {/* Created */}
                 <TableCell className="text-muted-foreground">
                   {new Date(user.createdAt).toLocaleDateString("en-GB")}
                 </TableCell>
 
-                {/* Actions */}
                 <TableCell className="text-right">
                   <button
                     type="button"
@@ -110,7 +102,6 @@ export async function UserTable({ page }: UserTableProps) {
         </Table>
       </div>
 
-      {/* Pagination */}
       <UserPagination
         page={meta.page}
         total={meta.total}
