@@ -13,9 +13,17 @@ export interface IUser {
   updatedAt: string;
 }
 
-export type NavbarProps = {
-  user: IUser;
-};
+export interface ICurrentUserResponse {
+  success: boolean;
+  message?: string;
+  data: {
+    profile: IUser;
+  };
+}
+
+export interface NavbarProps {
+  user: ICurrentUserResponse;
+}
 
 export type ISidebarItem = {
   label: string;

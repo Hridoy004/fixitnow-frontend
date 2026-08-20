@@ -30,18 +30,22 @@ export default function DashboardSidebar({ user }: NavbarProps) {
   return (
     <Sidebar
       collapsible="none"
-      className=" h-[calc(100svh-0rem)] border-r border-sidebar-border"
+      className="h-[calc(100svh-0rem)] w-56 shrink-0 border-r border-sidebar-border xl:w-64"
     >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1 px-2">
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname === item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    className="h-10 text-sm xl:h-11 xl:text-[15px]"
+                  >
                     <Link href={item.href}>
-                      <item.icon />
-                      <span>{item.label}</span>
+                      <item.icon className="h-4 w-4 shrink-0 xl:h-4.5 xl:w-4.5" />
+                      <span className="truncate">{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
