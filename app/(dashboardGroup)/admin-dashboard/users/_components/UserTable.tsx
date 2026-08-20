@@ -7,9 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IUsers } from "@/lib/types";
+import { IUser } from "@/lib/types";
 
-import { MoreHorizontal } from "lucide-react";
 import { UserPagination } from "./UserPagination";
 
 type UserTableProps = {
@@ -41,12 +40,11 @@ export async function UserTable({ page }: UserTableProps) {
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Created</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
-            {result.data.map((user: IUsers) => (
+            {result.data.map((user: IUser) => (
               <TableRow key={user.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
@@ -86,15 +84,6 @@ export async function UserTable({ page }: UserTableProps) {
 
                 <TableCell className="text-muted-foreground">
                   {new Date(user.createdAt).toLocaleDateString("en-GB")}
-                </TableCell>
-
-                <TableCell className="text-right">
-                  <button
-                    type="button"
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-md hover:bg-muted"
-                  >
-                    <MoreHorizontal className="h-4 w-4" />
-                  </button>
                 </TableCell>
               </TableRow>
             ))}

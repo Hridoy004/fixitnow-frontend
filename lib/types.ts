@@ -1,71 +1,17 @@
 import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 
-export type IPostStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
-
-export type IAuthor = {
+export interface IUser {
   id: string;
   name: string;
   email: string;
-  activeStatus: string;
-  role: string;
+  phone: string;
+  image: string | null;
+  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+  activeStatus: "ACTIVE" | "INACTIVE";
   createdAt: string;
   updatedAt: string;
-};
-
-export type IComment = {
-  id: string;
-  content: string;
-  status: string;
-  postId: string;
-  authorId: string;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type IPost = {
-  id: string;
-  title: string;
-  content: string;
-  thumbnail: string | null;
-  isFeatured: boolean;
-  status: IPostStatus;
-  tags: string[];
-  views: number;
-  isPremium: boolean;
-  authorId: string;
-  author?: IAuthor;
-  comments?: IComment[];
-  _count?: {
-    comments: number;
-  };
-  createdAt: string;
-  updatedAt: string;
-};
-
-type IUser = {
-  success: boolean;
-  message: string;
-  data: {
-    profile: {
-      id: string;
-      name: string;
-      email: string;
-      activeStatus: string;
-      role: string;
-      createdAt: string;
-      updatedAt: string;
-      profile: {
-        id: string;
-        profilePhoto: string;
-        bio: string | null;
-        userId: string;
-        createdAt: string;
-        updatedAt: string;
-      };
-    };
-  };
-};
+}
 
 export type NavbarProps = {
   user: IUser;
@@ -90,24 +36,72 @@ export interface ITechnician {
   isAvailable: boolean;
   createdAt: string;
   updatedAt: string;
-}
 
-export interface IUsers {
-  id: string;
-  name: string;
-  email: string;
-  phone: string | null;
-  image: string | null;
-  role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
-  activeStatus: "ACTIVE" | "INACTIVE";
-  createdAt: string;
-  updatedAt: string;
-  technician: ITechnician | null;
+  user: IUser;
 }
 
 export interface ICategory {
   id: string;
   name: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IService {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  technicianId: string;
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+
+  category: ICategory;
+}
+
+export interface IReview {
+  id: string;
+  bookingId: string;
+  customerId: string;
+  technicianId: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type BookingStatus =
+  | "PENDING"
+  | "CONFIRMED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export interface IBooking {
+  id: string;
+  customerId: string;
+  technicianId: string;
+  serviceId: string;
+
+  bookingDate: string;
+  totalAmount: number;
+  status: BookingStatus;
+
+  createdAt: string;
+  updatedAt: string;
+
+  customer: IUser;
+  technician: ITechnician;
+  service: IService;
+  review: IReview | null;
+}
+
+export interface IDashboardStats {
+  totalBookings: number;
+  totalRevenue: number;
+  totalUsers: number;
+  totalTechnicians: number;
+  bookingsThisMonth: number;
+  revenueThisMonth: number;
 }
