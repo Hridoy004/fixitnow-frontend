@@ -1,6 +1,5 @@
 import { CalendarCheck, UserRound, Users, Wallet } from "lucide-react";
-
-import { getDashboardStats } from "../_actions/dashboardActions";
+import { getDashboardStats } from "../../_actions/adminDashboardActions";
 import { StatCard } from "./StatCard";
 
 export async function StatsGrid() {

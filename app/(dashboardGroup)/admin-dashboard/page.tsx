@@ -1,8 +1,7 @@
 import { Suspense } from "react";
-
-import { RecentBookings } from "../_components/RecentBookings";
-import { StatsGridSkeleton } from "../_components/StatCardSkeleton";
-import { StatsGrid } from "../_components/StatsGrid";
+import { RecentBookings } from "./_components/RecentBookings";
+import { StatsGridSkeleton } from "./_components/StatCardSkeleton";
+import { StatsGrid } from "./_components/StatsGrid";
 import { BookingTableSkeleton } from "./bookings/_components/BookingTableSkeleton";
 
 export default function AdminDashboardPage() {

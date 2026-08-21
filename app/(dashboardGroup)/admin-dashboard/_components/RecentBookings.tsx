@@ -1,8 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-import { getAllBookings } from "../_actions/bookingActions";
-import { BookingTable } from "../admin-dashboard/bookings/_components/BookingTable";
+import { getAllBookings } from "../../_actions/bookingActions";
+import { BookingTable } from "../bookings/_components/BookingTable";
 
 export async function RecentBookings() {
   const { success, message, data } = await getAllBookings(1, 5);

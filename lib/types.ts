@@ -33,20 +33,9 @@ export type ISidebarItem = {
   >;
 };
 
-export interface ITechnician {
-  id: string;
-  userId: string;
-  bio: string;
-  experience: number;
-  location: string;
-  hourlyRate: number;
-  averageRating: number;
-  isAvailable: boolean;
-  createdAt: string;
-  updatedAt: string;
-
-  user: IUser;
-}
+/* =====================================================
+   CATEGORY
+===================================================== */
 
 export interface ICategory {
   id: string;
@@ -54,6 +43,10 @@ export interface ICategory {
   createdAt: string;
   updatedAt: string;
 }
+
+/* =====================================================
+   SERVICE
+===================================================== */
 
 export interface IService {
   id: string;
@@ -68,6 +61,10 @@ export interface IService {
   category: ICategory;
 }
 
+/* =====================================================
+   REVIEW
+===================================================== */
+
 export interface IReview {
   id: string;
   bookingId: string;
@@ -77,7 +74,34 @@ export interface IReview {
   comment: string;
   createdAt: string;
   updatedAt: string;
+
+  customer: IUser;
 }
+
+/* =====================================================
+   TECHNICIAN
+===================================================== */
+
+export interface ITechnician {
+  id: string;
+  userId: string;
+  bio: string;
+  experience: number;
+  location: string;
+  hourlyRate: number;
+  averageRating: number;
+  isAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+
+  user: IUser;
+  services: IService[];
+  reviews: IReview[];
+}
+
+/* =====================================================
+   BOOKING
+===================================================== */
 
 export type BookingStatus =
   | "PENDING"
@@ -104,6 +128,10 @@ export interface IBooking {
   service: IService;
   review: IReview | null;
 }
+
+/* =====================================================
+   DASHBOARD STATS
+===================================================== */
 
 export interface IDashboardStats {
   totalBookings: number;
