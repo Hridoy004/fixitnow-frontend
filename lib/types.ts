@@ -75,7 +75,7 @@ export interface IReview {
   createdAt: string;
   updatedAt: string;
 
-  customer: IUser;
+  customer?: IUser;
 }
 
 /* =====================================================

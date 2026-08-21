@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -10,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 import { updateTechnicianProfile } from "@/app/(dashboardGroup)/_actions/technicianActions";
-
 import { ITechnician } from "@/lib/types";
 
 interface TechnicianProfileFormProps {
@@ -20,6 +20,8 @@ interface TechnicianProfileFormProps {
 export default function TechnicianProfileForm({
   technician,
 }: TechnicianProfileFormProps) {
+  const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
 
   const [bio, setBio] = useState(technician.bio);
@@ -67,6 +69,10 @@ export default function TechnicianProfileForm({
       }
 
       toast.success(result.message ?? "Profile updated successfully.");
+
+      router.push("/technician-dashboard");
+
+      router.refresh();
     });
   };
 
@@ -75,7 +81,6 @@ export default function TechnicianProfileForm({
       onSubmit={handleSubmit}
       className="rounded-xl border border-border bg-background"
     >
-      {/* Header */}
       <div className="border-b border-border px-6 py-5">
         <h2 className="font-semibold">Edit Technician Profile</h2>
 
@@ -84,9 +89,7 @@ export default function TechnicianProfileForm({
         </p>
       </div>
 
-      {/* Form */}
       <div className="space-y-5 p-6">
-        {/* Bio */}
         <div className="space-y-2">
           <Label htmlFor="bio">Bio</Label>
 
@@ -100,7 +103,6 @@ export default function TechnicianProfileForm({
           />
         </div>
 
-        {/* Experience */}
         <div className="space-y-2">
           <Label htmlFor="experience">Experience (years)</Label>
 
@@ -114,7 +116,6 @@ export default function TechnicianProfileForm({
           />
         </div>
 
-        {/* Location */}
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
 
@@ -127,7 +128,6 @@ export default function TechnicianProfileForm({
           />
         </div>
 
-        {/* Hourly Rate */}
         <div className="space-y-2">
           <Label htmlFor="hourlyRate">Hourly Rate</Label>
 
@@ -144,7 +144,16 @@ export default function TechnicianProfileForm({
       </div>
 
       {/* Footer */}
-      <div className="flex justify-end border-t border-border px-6 py-4">
+      <div className="flex justify-end gap-3 border-t border-border px-6 py-4">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={isPending}
+          onClick={() => router.push("/technician-dashboard")}
+        >
+          Cancel
+        </Button>
+
         <Button type="submit" disabled={isPending}>
           {isPending ? (
             <>

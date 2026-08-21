@@ -162,7 +162,7 @@ export const updateTechnicianProfile = async (
     const res = await fetch(
       `${process.env.BACKEND_API_URL}/api/technicians/profile`,
       {
-        method: "PATCH",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Cookie: `accessToken=${accessToken}`,
