@@ -2,6 +2,7 @@
 
 "use server";
 
+import { ICategory } from "@/lib/types";
 import { isAccessTokenExist } from "@/service/refreshToken";
 import { revalidateTag } from "next/cache";
 
@@ -102,60 +103,50 @@ export const deleteCategory = async (categoryId: string) => {
   return result;
 };
 
-export const getCategories = async () => {
-  const accessToken = await isAccessTokenExist();
+export const getPublicCategories = async (): Promise<{
+  success: boolean;
+  message: string;
+  data: ICategory[];
+}> => {
+  try {
+    const accessToken = await isAccessTokenExist();
 
-  if (!accessToken) {
-    return {
-      success: false,
-      message: "User not logged in!",
-    };
-  }
-
-  const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/admin/categories`,
-    {
+    const res = await fetch(`${process.env.BACKEND_API_URL}/api/categories`, {
+      method: "GET",
       headers: {
         Cookie: `accessToken=${accessToken}`,
+        "Content-Type": "application/json",
       },
       cache: "force-cache",
       next: {
         revalidate: 60 * 60 * 24,
-        tags: ["categories"],
+        tags: ["public-categories"],
       },
-    },
-  );
+    });
 
-  const result = await res.json();
+    const result = await res.json();
 
-  return result;
-};
+    if (!res.ok) {
+      return {
+        success: false,
+        message:
+          result.message ?? `Failed to fetch categories (status ${res.status})`,
+        data: [],
+      };
+    }
 
-export const getCategoryById = async (categoryId: string) => {
-  const accessToken = await isAccessTokenExist();
+    return {
+      success: result.success ?? true,
+      message: result.message ?? "Categories retrieved successfully.",
+      data: result.data ?? [],
+    };
+  } catch (error) {
+    console.error("getPublicCategories error:", error);
 
-  if (!accessToken) {
     return {
       success: false,
-      message: "User not logged in!",
+      message: "Something went wrong while fetching categories.",
+      data: [],
     };
   }
-
-  const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/admin/categories/${categoryId}`,
-    {
-      headers: {
-        Cookie: `accessToken=${accessToken}`,
-      },
-      cache: "force-cache",
-      next: {
-        revalidate: 60 * 60 * 24,
-        tags: [`category-${categoryId}`],
-      },
-    },
-  );
-
-  const result = await res.json();
-
-  return result;
 };

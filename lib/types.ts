@@ -33,10 +33,6 @@ export type ISidebarItem = {
   >;
 };
 
-/* =====================================================
-   CATEGORY
-===================================================== */
-
 export interface ICategory {
   id: string;
   name: string;
@@ -44,9 +40,12 @@ export interface ICategory {
   updatedAt: string;
 }
 
-/* =====================================================
-   SERVICE
-===================================================== */
+export interface IServicePayload {
+  title: string;
+  description: string;
+  price: number;
+  categoryId: string;
+}
 
 export interface IService {
   id: string;
@@ -61,10 +60,6 @@ export interface IService {
   category: ICategory;
 }
 
-/* =====================================================
-   REVIEW
-===================================================== */
-
 export interface IReview {
   id: string;
   bookingId: string;
@@ -77,10 +72,6 @@ export interface IReview {
 
   customer?: IUser;
 }
-
-/* =====================================================
-   TECHNICIAN
-===================================================== */
 
 export interface ITechnician {
   id: string;
@@ -98,10 +89,6 @@ export interface ITechnician {
   services: IService[];
   reviews: IReview[];
 }
-
-/* =====================================================
-   BOOKING
-===================================================== */
 
 export type BookingStatus =
   | "PENDING"
@@ -128,10 +115,6 @@ export interface IBooking {
   service: IService;
   review: IReview | null;
 }
-
-/* =====================================================
-   DASHBOARD STATS
-===================================================== */
 
 export interface IDashboardStats {
   totalBookings: number;
