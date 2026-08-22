@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use server";
 
 import { IDashboardStats } from "@/lib/types";
-import { getAllBookings } from "./bookingActions";
-
+import { getAllBookingsForAdmin } from "./bookingActions";
 import { getAllTechnicians } from "./technicianActions";
 import { getAllUsers } from "./userActions";
 
@@ -25,7 +26,7 @@ export const getDashboardStats =
   async (): Promise<GetDashboardStatsResponse> => {
     try {
       const [bookingsRes, usersRes, techniciansRes] = await Promise.all([
-        getAllBookings(1, 100),
+        getAllBookingsForAdmin(1, 100),
         getAllUsers(1, 100),
         getAllTechnicians(),
       ]);
@@ -45,7 +46,8 @@ export const getDashboardStats =
 
       const totalRevenue = bookingsRes.success
         ? bookingsRes.data.reduce(
-            (sum, booking) => sum + booking.totalAmount,
+            (sum: any, booking: { totalAmount: any }) =>
+              sum + booking.totalAmount,
             0,
           )
         : 0;

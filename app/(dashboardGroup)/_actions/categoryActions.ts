@@ -150,3 +150,28 @@ export const getPublicCategories = async (): Promise<{
     };
   }
 };
+
+export const getCategories = async () => {
+  const accessToken = await isAccessTokenExist();
+
+  if (!accessToken) {
+    return {
+      success: false,
+      message: "User not logged in!",
+      data: [],
+    };
+  }
+
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/admin/categories`,
+    {
+      method: "GET",
+      headers: {
+        Cookie: `accessToken=${accessToken}`,
+      },
+      cache: "no-store",
+    },
+  );
+
+  return res.json();
+};

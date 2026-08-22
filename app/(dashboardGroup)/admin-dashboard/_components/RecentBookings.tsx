@@ -1,10 +1,10 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { getAllBookings } from "../../_actions/bookingActions";
+import { getAllBookingsForAdmin } from "../../_actions/bookingActions";
 import { BookingTable } from "../bookings/_components/BookingTable";
 
 export async function RecentBookings() {
-  const { success, message, data } = await getAllBookings(1, 5);
+  const { success, message, data } = await getAllBookingsForAdmin(1, 5);
 
   return (
     <div className="space-y-4">

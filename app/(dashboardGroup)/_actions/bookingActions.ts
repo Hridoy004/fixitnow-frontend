@@ -255,3 +255,83 @@ export const cancelBooking = async (
     };
   }
 };
+
+export const getAllBookingsForAdmin = async (page = 1, limit = 10) => {
+  try {
+    const cookieStore = await cookies();
+
+    const accessToken = cookieStore.get("accessToken")?.value || null;
+
+    if (!accessToken) {
+      return {
+        success: false,
+        message: "User not logged in!",
+        data: [],
+        meta: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+        },
+      };
+    }
+
+    const res = await fetch(
+      `${process.env.BACKEND_API_URL}/api/admin/bookings?page=${page}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: `accessToken=${accessToken}`,
+        },
+        cache: "no-store",
+      },
+    );
+
+    const text = await res.text();
+
+    let json;
+
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = {
+        success: false,
+        message: text || "Invalid server response",
+        data: [],
+      };
+    }
+
+    if (!res.ok) {
+      console.error("Backend booking error:", res.status, json);
+
+      return {
+        success: false,
+        message:
+          json.message || `Failed to fetch bookings (status ${res.status})`,
+        data: [],
+        meta: {
+          page,
+          limit,
+          total: 0,
+          totalPages: 0,
+        },
+      };
+    }
+
+    return json;
+  } catch (error) {
+    console.error("getAllBookings error:", error);
+
+    return {
+      success: false,
+      message: "Something went wrong while fetching bookings.",
+      data: [],
+      meta: {
+        page,
+        limit,
+        total: 0,
+        totalPages: 0,
+      },
+    };
+  }
+};

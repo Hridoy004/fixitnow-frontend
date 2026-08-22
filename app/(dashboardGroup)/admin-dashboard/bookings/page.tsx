@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { getAllBookings } from "../../_actions/bookingActions";
+import { getAllBookingsForAdmin } from "../../_actions/bookingActions";
 import { BookingPagination } from "./_components/BookingPagination";
 import { BookingTable } from "./_components/BookingTable";
 import { BookingTableSkeleton } from "./_components/BookingTableSkeleton";
@@ -17,7 +17,10 @@ async function BookingContent({
   const params = await searchParams;
   const page = Number(params.page) > 0 ? Number(params.page) : 1;
 
-  const { success, message, data, meta } = await getAllBookings(page, 10);
+  const { success, message, data, meta } = await getAllBookingsForAdmin(
+    page,
+    10,
+  );
 
   if (!success) {
     return (

@@ -30,9 +30,9 @@ export default function DashboardSidebar({ user }: NavbarProps) {
   return (
     <Sidebar
       collapsible="none"
-      className="h-[calc(100svh-0rem)] w-56 shrink-0 border-r border-sidebar-border xl:w-64"
+      className="h-auto min-h-full w-56 shrink-0 border-r border-sidebar-border xl:w-64"
     >
-      <SidebarContent>
+      <SidebarContent className="h-full">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu className="gap-1 px-2">
