@@ -91,20 +91,24 @@ export interface ITechnician {
 }
 
 export type BookingStatus =
-  | "PENDING"
-  | "CONFIRMED"
+  | "REQUESTED"
+  | "ACCEPTED"
+  | "DECLINED"
+  | "PAID"
   | "IN_PROGRESS"
   | "COMPLETED"
   | "CANCELLED";
 
 export interface IBooking {
   id: string;
+
   customerId: string;
   technicianId: string;
   serviceId: string;
 
   bookingDate: string;
   totalAmount: number;
+
   status: BookingStatus;
 
   createdAt: string;
@@ -113,6 +117,7 @@ export interface IBooking {
   customer: IUser;
   technician: ITechnician;
   service: IService;
+
   review: IReview | null;
 }
 
